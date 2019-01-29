@@ -13,6 +13,8 @@ function randomDad() {
     document.getElementById('uber').innerHTML = driverRating() + " stars";
     document.getElementById('laugh').innerHTML = laughter() + " dB";
     document.getElementById('bio').innerHTML = bio();
+
+    face();
 }
 
 function formatID() { // turn ID number into 3 digit

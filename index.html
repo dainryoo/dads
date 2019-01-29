@@ -6,9 +6,21 @@
         <script type="text/javascript" src="arrays.js"></script>
         <script type="text/javascript" src="script.js"></script>
         <script type="text/javascript" src="bio.js"></script>
+        <script type="text/javascript" src="face.js"></script>
     </head>
     <body onload=randomDad()>
         <h1>hi i'm dad!</h1>
+        <svg id="face-container" width="150" height="150">
+            <rect x="0" y="0" width="150" height="150" fill="#529fca" />
+            <path id="jaw" stroke="black" fill="transparent"/>
+            <g id="eyes">
+                <circle />
+                <circle />
+            </g>
+            <path id="nose" stroke="black" fill="transparent" />
+            <path id="mouth" stroke="black" fill="transparent"/>
+        </svg>
+
         <!-- WHAT IS THE ESSENCE OF DADHOOD? -->
         <p>Dad <span id="id">?</span> </p>
         <p>Name: <span id="name">?</span></p>
