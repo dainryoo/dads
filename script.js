@@ -2,16 +2,18 @@ var randomMin = 0;
 var randomMax = 999;
 var id = -1;
 
+var fName, lName, totalHeight, weight, bmi, driverRating, emotionalStrength, laughter;
+
 function randomDad() {
     id = randomNumber();
     document.getElementById('id').innerHTML = "#" + formatID();
     document.getElementById('name').innerHTML = name();
     document.getElementById('height').innerHTML = heightImperial() + " (" + heightMetric() + ")";
     document.getElementById('weight').innerHTML = weightImperial() + " (" + weightMetric() + ")";
-    document.getElementById('emotion').innerHTML = emotionalStrength() + "lbs";
+    document.getElementById('emotion').innerHTML = calcEmotionalStrength() + "lbs";
     document.getElementById('strength').innerHTML = armStrength() + "lbs";
-    document.getElementById('uber').innerHTML = driverRating() + " stars";
-    document.getElementById('laugh').innerHTML = laughter() + " dB";
+    document.getElementById('uber').innerHTML = calcDriverRating() + " stars";
+    document.getElementById('laugh').innerHTML = calcLaughter() + " dB";
     document.getElementById('bio').innerHTML = bio();
 
     face();
@@ -33,14 +35,16 @@ function name() {
 }
 
 function firstName() {
-    return names[id%names.length];
+    fName = names[id%names.length]
+    return fName;
 }
 
 function lastName() {
-    return surnames[Math.round(id/2)%surnames.length];
+    lName = surnames[Math.round(id/2)%surnames.length];
+    return lName;
 }
 
-function height() { // returns inches
+function calcTotalHeight() { // returns inches
     var feet;
     var inches;
 
@@ -63,23 +67,23 @@ function height() { // returns inches
     }
     inches = Math.ceil(min + (x)*(max-min)/(99));
 
-    var totalInches = inches + (feet * 12);
-    return totalInches;
+    totalHeight = inches + (feet * 12);
+    return totalHeight;
 }
 
 function heightImperial() { // returns feet and inches
-    var totalInches = height();
+    var totalInches = calcTotalHeight();
     var feet = Math.floor(totalInches/12);
     var inches = totalInches - feet * 12;
     return feet + "ft " + inches + "in";
 }
 
 function heightMetric() { // returns centimeters
-    var totalInches = height();
+    var totalInches = calcTotalHeight();
     return Math.round(totalInches * 2.54) + "cm";
 }
 
-function bmi() { // map to BMI range of 19-28
+function calcBMI() { // map to BMI range of 19-28
     var temp = id;
     var x = 0; // add the digits of id (00-27)
     while (temp > 0) {
@@ -88,28 +92,30 @@ function bmi() { // map to BMI range of 19-28
     }
     x = Math.round(x/3); // turn 00-27 to 0-9
     x = 10-x; // flip 0-9 to 9-0
-    x += 19; // 0-9 to 19-28
-    return x;
+    bmi = x + 17; // 0-9 to 17-26
+    return bmi;
 }
 
-function weight() {
+function calcWeight() {
     // http://www.scymed.com/en/smnxpn/pndhc226.htm
     // weight (lb) = BMI * (height, inch)^2 / 704
-    return Math.round(bmi() * height() * height() / 704);
+    weight = Math.round(calcBMI() * totalHeight * totalHeight / 704);
+    return weight;
 }
 
 function weightImperial() {
-    return weight() + "lbs ";
+    return calcWeight() + "lbs ";
 }
 
 function weightMetric() {
-    return Math.round(weight()/2.204) + "kg";
+    return Math.round(calcWeight()/2.204) + "kg";
 }
 
-function emotionalStrength() {
+function calcEmotionalStrength() {
     var surname = lastName();
     var x = surname.charCodeAt(surname.length-1); // (97, 122)
-    return x;
+    emotionalStrength = x*2; // (194, 244)
+    return emotionalStrength;
 }
 
 function armStrength() {
@@ -127,16 +133,16 @@ function armStrength() {
 
     switch (x) {
         case 0: // Beginner (0) : weight * 0.1
-            strength = weight() * 0.1;
+            strength = weight * 0.1;
             break;
         case 1: // Novice (1) : weight * 0.17
-            strength = weight() * 0.17;
+            strength = weight * 0.17;
             break;
         case 2: // Intermediate (2) : weight * 0.3
-            strength = weight() * 0.3;
+            strength = weight * 0.3;
             break;
         case 3: // Advanced (3) : weight * 0.42
-            strength = weight() * 0.42;
+            strength = weight * 0.42;
             break;
         default:
             break;
@@ -144,22 +150,23 @@ function armStrength() {
     return Math.round(strength);
 }
 
-function laughter() {
+function calcLaughter() {
     // https://www.tlc-direct.co.uk/Technical/Sounds/Decibles.htm (50-75 dB)
-    var w = weight();
+    var w = weight;
     var x = Math.floor(w/10); // first two digits of weight (14-21?)
     var y = Math.floor(w%10/2); // last digit of weight (0-4)
     var z = x-y; // (10-21)
-    return Math.round(50 + (z-10)*(75-50)/(21-10)); // map (10-21) to (50-75)
+    laughter = Math.round(50 + (z-10)*(75-50)/(21-10)); // map (10-21) to (50-75)
+    return laughter;
 }
 
-function driverRating() {
-    var emotion = emotionalStrength(); // (97-122)
+function calcDriverRating() {
+    var emotion = emotionalStrength; // (194, 244)
     var x = id%10; // (0-9)
-    var i = emotion-x; // (88, 122)
-    i = 3 + (i-88)*(5-3)/(122-88); // map (88, 122) to (3-5)
-
-    return Math.round(i*100)/100; // two decimal points
+    var i = emotion-x; // (185, 244)
+    i = 3.9 + (i-185)*(5-3.9)/(244-185); // map (185, 244) to (3.9-5)
+    driverRating = Math.round(i*100)/100; // two decimal points
+    return driverRating;
 }
 
 function randomNumber() {
