@@ -2,7 +2,7 @@ var randomMin = 0;
 var randomMax = 999;
 var id = -1;
 
-var fName, lName, totalHeight, weight, bmi, driverRating, emotionalStrength, laughter;
+var fName, lName, totalHeight, weight, bmi, driverRating, emotionalStrength, armStrength, laughter;
 
 function randomDad() {
     id = randomNumber();
@@ -11,7 +11,7 @@ function randomDad() {
     document.getElementById('height').innerHTML = heightImperial() + " (" + heightMetric() + ")";
     document.getElementById('weight').innerHTML = weightImperial() + " (" + weightMetric() + ")";
     document.getElementById('emotion').innerHTML = calcEmotionalStrength() + "lbs";
-    document.getElementById('strength').innerHTML = armStrength() + "lbs";
+    document.getElementById('strength').innerHTML = calcArmStrength() + "lbs";
     document.getElementById('uber').innerHTML = calcDriverRating() + " stars";
     document.getElementById('laugh').innerHTML = calcLaughter() + " dB";
     document.getElementById('bio').innerHTML = bio();
@@ -118,7 +118,7 @@ function calcEmotionalStrength() {
     return emotionalStrength;
 }
 
-function armStrength() {
+function calcArmStrength() {
     // https://strengthlevel.com/strength-standards/dumbbell-curl/lb
     // Determine level (beginner to advanced) based on id
     var strength = 0;
@@ -147,7 +147,8 @@ function armStrength() {
         default:
             break;
     }
-    return Math.round(strength);
+    armStrength = Math.round(strength);
+    return armStrength;
 }
 
 function calcLaughter() {
