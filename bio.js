@@ -18,7 +18,7 @@ function hello() {
     }
 
     var name = "";
-    name = "My name is " + firstName() + ". ";
+    name = "My name is " + firstName + ". ";
 
     return intro + name;
 }

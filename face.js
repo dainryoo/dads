@@ -1,4 +1,4 @@
-function face() {
+function generateFace() {
     var container = document.getElementById('face-container');
     var width = container.getAttribute('width');
     var height = container.getAttribute('height');
@@ -17,7 +17,7 @@ function face() {
     var jawTopY = height * 0.5; // jaw always starts at half the (container) height
     // ** jawHeight = 54% to 56% of (container) height **
     // ** depends on height: map height (63, 79) to (0.54, 0.56)
-    var jawHeight = height * (0.54 + (totalHeight-63)*(0.56-0.54)/(79-63));
+    var jawHeight = height * (0.54 + (heightInches-63)*(0.56-0.54)/(79-63));
 
     var jawBottomY = jawTopY + jawHeight;
     var jawStartX = centerX - (jawWidth/2);
@@ -50,7 +50,7 @@ function face() {
     var eyeDistance = jawWidth * 0.25; // distance of each eye from center
     // ** eyeY = 44% to 50% of (container) height **
     // ** depends on Name: map Name (65, 90) to (0.44, 0.5)
-    var eyeY = height * (0.44 + (fName.charCodeAt(0)-65)*(0.5-0.44)/(90-65));
+    var eyeY = height * (0.44 + (firstName.charCodeAt(0)-65)*(0.5-0.44)/(90-65));
     var eyes = document.getElementById('eyes').children;
     for (var i = 0; i < eyes.length; i++) {
         eyes[i].setAttribute("r", eyeRadius);
@@ -124,14 +124,14 @@ function face() {
     // -------------
     var brows = document.getElementById('eyebrows').children;
     // ** browThickness = 4 to 9 **
-    // ** depends on emotionalStrength: emotion/10%10 (0,9) to (4,9);
-    var browThickness = (4 + (emotionalStrength/10%10-0)*(9-4)/(9-0));
+    // ** depends on emotionalWeight: emotion/10%10 (0,9) to (4,9);
+    var browThickness = (4 + (emotionalWeight/10%10-0)*(9-4)/(9-0));
 
     var browDistance = jawWidth * 0.12;
     var browLength = jawWidth * 0.25;
     // ** browY = 2% to 4% of (container) height
     // ** depends on height: height%10 (0,9) to (0.02,0.04);
-    var browY = eyeY - height * (totalHeight%10-0)*(0.04-0.02)/(9-0);
+    var browY = eyeY - height * (heightInches%10-0)*(0.04-0.02)/(9-0);
     if (Math.round(driverRating*100%10 %3) == 0) {
         var browStartY = browY - 10;
         var browEndY = browY - 5;
@@ -169,7 +169,8 @@ function face() {
     var noseTopX = centerX;
     // ** noseTopY = 50% to 55% of (container) height **
     // ** depends on name: map name (97, 122) to (0.5, 0.55)
-    var noseTopY = height * (0.5 + (fName.charCodeAt(fName.length-1)-97)*(0.55-0.5)/(122-97));
+    var noseTopY = height * (0.5 + (firstName.charCodeAt(firstName.length-1)-97)*(0.55-0.5)/(122-97));
+
     var noseTop = centerX + " " + noseTopY; // where nose begins at the top (near eyes)
     // ** noseTipWidth = 3% to 6% of (container) height **
     // ** depends on id: map id%10 (0-9) to (0.03, 0.06)
@@ -198,10 +199,10 @@ function face() {
     var mouthEndX = mouthStartX + mouthWidth;
     // ** mouthY = 5% to 9% of (container) height below the nose
     // ** depends on surname: map surname (97, 122) to (0.05, 0.09)
-    var mouthY = noseEndY + height * (0.05 + (lName.charCodeAt(lName.length-1)-97)*(0.09-0.05)/(122-97));
+    var mouthY = noseEndY + height * (0.05 + (lastName.charCodeAt(lastName.length-1)-97)*(0.09-0.05)/(122-97));
     // ** mouthBottomY = 6% to 12% of (container) height below mouthY
-    // ** depends on emotionalStrength: map emotion (185, 244) to (0.06, 0.12)
-    var mouthBottomY = mouthY + height * (0.06 + (emotionalStrength-185)*(0.12-0.06)/(244-185));
+    // ** depends on emotionalWeight: map emotion (185, 244) to (0.06, 0.12)
+    var mouthBottomY = mouthY + height * (0.06 + (emotionalWeight-185)*(0.12-0.06)/(244-185));
 
     var mouthX0 = mouthStartX + 5;
     var mouthX1 = mouthEndX - 5;
@@ -213,28 +214,59 @@ function face() {
     mouth.setAttribute("d", "M " + mouthStart + ", C " + mouthControl0 + ", " + mouthControl1 + ", " + mouthEnd);
 
 
-
-
-    // ---------------------- FACIAL HAIR
-
     // -------------
     // mustache
     // -------------
-    var stache = document.getElementById('mustache');
+    if (Math.abs(id%10-weightImperial%10) > 4) {
+        // ** mustacheCoefficient = -0.02 to 0.2 **
+        // ** the higher the subtraction, the curlier and twirled up
+        // ** the higher the addition, the smoother and droopier
+        // ** depends on id and weight: map id%10-weight%10 (-9, 9) to (-0.02, 0.2)
+        var mustacheCoefficient = -0.02 + ((id%10-weightImperial%10)+9)*(0.2+0.02)/(9+9); // [-0.02, 0.2]
+        pringlesMustache(jawWidth, height, noseEndY, centerY, centerX, mustacheCoefficient);
+    } else {
+        var mustache = document.getElementById('mustache').children;
+        for (var i = 0; i < mustache.length; i++) {
+            mustache[i].setAttribute("d", "");
+        }
+    }
+}
 
-    // thin lines
-    var stacheTopY = noseEndY + 12;
-    var stacheTopLeftX = centerX - 4;
-    var stacheTopRightX = centerX + 4;
-    var stacheTopLeft = stacheTopLeftX + " " + stacheTopY;
-    var stacheTopRight = stacheTopRightX + " " + stacheTopY;
-    var stacheBottomY = mouthY + 3;
-    var stacheLeftX = mouthStartX - 3;
-    var stacheRightX = mouthEndX + 3;
-    var stacheLeft = stacheLeftX + " " + stacheBottomY;
-    var stacheRight = stacheRightX + " " + stacheBottomY;
 
-    //stache.setAttribute("d", "M " + stacheTopLeft + ", L " + stacheLeft + ", M " + stacheTopRight + ", L" + stacheRight);
-    stache.setAttribute("stroke-width", 15);
-    stache.setAttribute("stroke-linecap", "round");
+function pringlesMustache(jawWidth, height, noseEndY, centerY, centerX, mustacheCoefficient) {
+    var mustache = document.getElementById('mustache').children;
+    for (var i = 0; i < mustache.length; i++) {
+        var stacheWidth0 = jawWidth * 0.05;
+        var stacheTopHeight = height * 0.04; // the higher the curvier
+        var stacheWidth1 = jawWidth * 0.1;
+        var stacheBottomHeight = height * 0.3; // the higher the thicker
+        var stacheWidth2 = jawWidth * 0.2;
+        var stacheWidth3 = stacheWidth0;
+
+        var stacheCenterY = noseEndY + height * 0.02;
+        var stacheTopY = stacheCenterY - stacheTopHeight;
+        var stacheBottomY = centerY + stacheBottomHeight;
+        var stacheEndY = stacheCenterY + height * mustacheCoefficient;
+
+        if (i == 0) { // left
+            var stacheTopX = centerX - stacheWidth0;
+            var stacheDipX = stacheTopX - stacheWidth1;
+            var stacheEndX = stacheDipX - stacheWidth2;
+            var stacheBottomX = centerX - stacheWidth3;
+        } else {
+            var stacheTopX = centerX + stacheWidth0;
+            var stacheDipX = stacheTopX + stacheWidth1;
+            var stacheEndX = stacheDipX + stacheWidth2;
+            var stacheBottomX = centerX + stacheWidth3;
+        }
+
+        var stacheCenter = centerX + " " + stacheCenterY;
+        var stacheTop = stacheTopX + " " + stacheTopY;
+        var stacheDip = stacheDipX + " " + stacheCenterY;
+        var stacheEnd = stacheEndX + " " + stacheEndY;
+        var stacheBottom = stacheBottomX + " " + stacheBottomY;
+        mustache[i].setAttribute("d", "M " + stacheCenter + ", Q " + stacheTop + " " + stacheDip + " , T " + stacheEnd + ", Q " + stacheBottom + " " + stacheCenter);
+        mustache[i].setAttribute("stroke-width", 1);
+        mustache[i].setAttribute("fill", "black");
+    }
 }

@@ -10,6 +10,11 @@
     </head>
     <body onload=randomDad()>
         <h1>hi i'm dad!</h1>
+        <svg width="200" height="200">
+            <rect x="0" y="0" width="200" height="200" fill="#FF9FAB" />
+            <path id="mostache" stroke="black" />
+
+        </svg>
         <svg id="face-container" width="160" height="160">
             <rect x="0" y="0" width="160" height="160" fill="#529fca" />
             <path id="jaw" stroke="black" fill="transparent"/>
@@ -31,8 +36,10 @@
             </g>
 
             <path id="mouth" stroke="black" fill="transparent"/>
-
-            <path id="mustache" stroke="black" fill="transparent" />
+            <g id="mustache">
+                <path stroke="black" />
+                <path stroke="black" />
+            </g>
         </svg>
 
         <!-- WHAT IS THE ESSENCE OF DADHOOD? -->
