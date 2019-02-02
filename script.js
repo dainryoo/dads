@@ -20,6 +20,7 @@ var driverRating;
 var laughter;
 
 var hairColor;
+var blushColor;
 
 function randomDad() {
     calculateStats();
@@ -50,7 +51,7 @@ function calculateStats() {
     calculateArmStrength();
     calculateDriverRating();
     calculateLaughter();
-    calculateHairColor();
+    calculateColors();
 }
 
 
@@ -190,7 +191,8 @@ function calculateLaughter() {
     laughter = Math.round(50 + (z-10)*(75-50)/(21-10)); // map [10, 21] to [50-75]
 }
 
-function calculateHairColor() {
+function calculateColors() {
     // 000000 -
     hairColor = "#cecece";
+    blushColor = "#FF9FAB";
 }

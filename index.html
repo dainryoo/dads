@@ -3,6 +3,7 @@
     <head>
         <title>dads</title>
         <meta charset="utf-8">
+        <meta name="description" content="WHAT IS THE ESSENCE OF DADHOOD ?">
         <script type="text/javascript" src="arrays.js"></script>
         <script type="text/javascript" src="script.js"></script>
         <script type="text/javascript" src="bio.js"></script>
@@ -10,13 +11,12 @@
     </head>
     <body onload=randomDad()>
         <h1>hi i'm dad!</h1>
-        <svg width="200" height="200">
-            <rect x="0" y="0" width="200" height="200" fill="#FF9FAB" />
-            <path id="mostache" stroke="black" / fill="transparent">
-
-        </svg>
         <svg id="face-container" width="160" height="160">
             <rect x="0" y="0" width="160" height="160" fill="#529fca" />
+            <g id="blush">
+                <circle />
+                <circle />
+            </g>
             <path id="jaw" stroke="black" fill="transparent"/>
             <path id="scalp" stroke="black" fill="transparent"/>
             <g id="eyes">
@@ -42,7 +42,6 @@
             </g>
         </svg>
 
-        <!-- WHAT IS THE ESSENCE OF DADHOOD? -->
         <p>Dad <span id="id">?</span> </p>
         <p>Name: <span id="name">?</span></p>
         <p>Height: <span id="height">?</span></p>

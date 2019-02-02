@@ -30,6 +30,26 @@ function generateFace() {
     var jawControl1 = jawX1 + " " + jawBottomY;
     var jawEnd = jawEndX + " " + jawTopY;
 
+    // -------------
+    // blush
+    // -------------
+    var blush = document.getElementById('blush').children;
+    var blushDistanceX = (jawWidth/3.5);
+    var blushDistanceY = (jawWidth/4);
+    for (var i = 0; i < blush.length; i++) {
+        blush[i].setAttribute("fill", blushColor);
+        blush[i].setAttribute("r", (jawWidth/7.5));
+        if (i == 0) { // left
+            blush[i].setAttribute("cx", (centerX - blushDistanceX));
+        } else {
+            blush[i].setAttribute("cx", (centerX + blushDistanceX));
+        }
+
+        blush[i].setAttribute("cy", (centerY + blushDistanceY));
+    }
+
+
+
     jaw.setAttribute("d", "M " + jawStart + ", C " + jawControl0 + ", " + jawControl1 + ", " + jawEnd);
 
     // -------------
