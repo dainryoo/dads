@@ -160,6 +160,7 @@ function generateFace() {
         brows[i].setAttribute("d", "M " + browStart + ", Q " + browMid + " " + browEnd);
         brows[i].setAttribute("stroke-width", browThickness);
         brows[i].setAttribute("stroke-linecap", "round");
+        brows[i].setAttribute("stroke", hairColor);
     }
 
     // -------------
@@ -217,21 +218,58 @@ function generateFace() {
     // -------------
     // mustache
     // -------------
-    if (Math.abs(id%10-weightImperial%10) > 4) {
-        // ** mustacheCoefficient = -0.02 to 0.2 **
-        // ** the higher the subtraction, the curlier and twirled up
-        // ** the higher the addition, the smoother and droopier
-        // ** depends on id and weight: map id%10-weight%10 (-9, 9) to (-0.02, 0.2)
-        var mustacheCoefficient = -0.02 + ((id%10-weightImperial%10)+9)*(0.2+0.02)/(9+9); // [-0.02, 0.2]
-        pringlesMustache(jawWidth, height, noseEndY, centerY, centerX, mustacheCoefficient);
-    } else {
+    if (Math.abs(id%10-weightImperial%10) > 3) {
+        if (id%10 > weightImperial%10) {
+            var mustache = document.getElementById('mustache').children;
+            var stacheWidth = jawWidth * 0.56;
+
+            var stacheLeftX = centerX - (stacheWidth/2);
+            var stacheRightX = centerX + (stacheWidth/2);
+            var stacheTopX = (stacheLeftX + stacheRightX)/2;
+            var stacheTopY = noseEndY - height*0.1;
+            var stacheHeight = height*0.2;
+            var stacheY0 = stacheTopY + stacheHeight;
+
+
+            var stacheLeft = stacheLeftX + " " + stacheY0;
+            var stacheRight = stacheRightX + " " + stacheY0;
+            var stacheTopCenter = stacheTopX + " " + stacheTopY;
+            mustache[0].setAttribute("d", "M " + stacheRight + ", Q " + stacheTopCenter + " " + stacheLeft);
+
+            var stacheY1 = stacheY0 + 5;
+
+            if (id%10%2 == 0) {
+                var increment = stacheWidth/6;
+            } else {
+                var increment = stacheWidth/5;
+            }
+            for (var i = stacheLeftX; (stacheRightX-i) > 1; i += increment) {
+                var x1 = i + increment;
+                var x0 = (i + x1)/2;
+                var coord0 = x0 + " " + stacheY1;
+                var coord1 = x1 + " " + stacheY0;
+                mustache[0].setAttribute("d", mustache[0].getAttribute("d") + ", Q " + coord0 + " " + coord1);
+            }
+
+            mustache[0].setAttribute("stroke-width", 1);
+            mustache[0].setAttribute("fill", hairColor);
+            mustache[1].setAttribute("d", "");
+
+        } else {
+            // ** mustacheCoefficient = -0.02 to 0.2 **
+            // ** the higher the subtraction, the curlier and twirled up
+            // ** the higher the addition, the smoother and droopier
+            // ** depends on id and weight: map id%10-weight%10 (-9, 9) to (-0.02, 0.2)
+            var mustacheCoefficient = -0.02 + ((id%10-weightImperial%10)+9)*(0.2+0.02)/(9+9); // [-0.02, 0.2]
+            pringlesMustache(jawWidth, height, noseEndY, centerY, centerX, mustacheCoefficient);
+        }
+    } else  {
         var mustache = document.getElementById('mustache').children;
         for (var i = 0; i < mustache.length; i++) {
             mustache[i].setAttribute("d", "");
         }
     }
 }
-
 
 function pringlesMustache(jawWidth, height, noseEndY, centerY, centerX, mustacheCoefficient) {
     var mustache = document.getElementById('mustache').children;
@@ -267,6 +305,6 @@ function pringlesMustache(jawWidth, height, noseEndY, centerY, centerX, mustache
         var stacheBottom = stacheBottomX + " " + stacheBottomY;
         mustache[i].setAttribute("d", "M " + stacheCenter + ", Q " + stacheTop + " " + stacheDip + " , T " + stacheEnd + ", Q " + stacheBottom + " " + stacheCenter);
         mustache[i].setAttribute("stroke-width", 1);
-        mustache[i].setAttribute("fill", "black");
+        mustache[i].setAttribute("fill", hairColor);
     }
 }

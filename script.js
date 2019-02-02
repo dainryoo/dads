@@ -19,8 +19,11 @@ var armStrength;
 var driverRating;
 var laughter;
 
+var hairColor;
+
 function randomDad() {
     calculateStats();
+
     document.getElementById('id').innerHTML = "#" + formattedID;
     document.getElementById('name').innerHTML = firstName + " " + lastName;
     document.getElementById('height').innerHTML = heightImperialFeet + " ft " + heightImperialInches + " inches (" + heightMetric + " cm)";
@@ -47,6 +50,7 @@ function calculateStats() {
     calculateArmStrength();
     calculateDriverRating();
     calculateLaughter();
+    calculateHairColor();
 }
 
 
@@ -71,7 +75,7 @@ function generateID() {
 // pick a random first name and last name
 function generateName() {
     firstName = names[id%names.length];
-    lastName = surnames[surnames.length - Math.round(id*1.3)%surnames.length];
+    lastName = surnames[surnames.length - 1 - Math.round(id*1.3)%surnames.length];
 }
 
 // generate a random height
@@ -184,4 +188,9 @@ function calculateLaughter() {
     var y = Math.floor(w%10/2); // last digit of weight [0, 4]
     var z = x-y; // [10, 21]
     laughter = Math.round(50 + (z-10)*(75-50)/(21-10)); // map [10, 21] to [50-75]
+}
+
+function calculateHairColor() {
+    // 000000 -
+    hairColor = "#cecece";
 }
